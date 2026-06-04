@@ -2,7 +2,7 @@
 //  KNN — K-Nearest Neighbors & Classification basics
 // ============================================================
 
-QUESTIONS.push(
+registerTopic("KNN",
 
   // Q1
   {
