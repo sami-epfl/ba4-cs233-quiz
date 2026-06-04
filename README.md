@@ -1,6 +1,6 @@
 # CS-233 — Quiz
 
-**[https://sami-epfl.github.io/ba4-cs233-qcm/](https://sami-epfl.github.io/ba4-cs233-qcm/)**
+**[https://sami-epfl.github.io/ba4-cs233-quiz/](https://sami-epfl.github.io/ba4-cs233-quiz/)**
 
 ## Setup
 
