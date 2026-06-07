@@ -6,7 +6,7 @@ registerTopic("KNN",
 
   // Q1
   {
-    type: "mcq",
+    type: "scq",
     question: "In a weight classification task (underweight / normal weight / overweight), which of the following are the features used to predict the labels?",
     options: [
       "Underweight, normal weight, overweight",
@@ -20,7 +20,7 @@ registerTopic("KNN",
 
   // Q1b
   {
-    type: "mcq",
+    type: "scq",
     question: "In a weight classification task, which of the following are the labels?",
     options: [
       "Height and weight",
@@ -42,7 +42,7 @@ registerTopic("KNN",
 
   // Q3
   {
-    type: "mcq",
+    type: "scq",
     question: "What should the test set share in common with the training set?",
     options: [
       "The same number of samples",
@@ -56,7 +56,7 @@ registerTopic("KNN",
 
   // Q4
   {
-    type: "mcq",
+    type: "scq",
     question: "Why do we use the mean and std of the training set — and not the test set — to normalize the test data?",
     options: [
       "Because the test set is always larger than the training set",
@@ -78,7 +78,7 @@ registerTopic("KNN",
 
   // Q5
   {
-    type: "mcq",
+    type: "scq",
     question: "Which of the following is a key limitation of using accuracy as the sole evaluation metric?",
     options: [
       "Accuracy is too slow to compute",
@@ -100,7 +100,7 @@ registerTopic("KNN",
 
   // Q6
   {
-    type: "mcq",
+    type: "scq",
     question: "Which tool gives a detailed view of what specific mistakes a classification model makes?",
     options: [
       "Learning curve",
@@ -114,7 +114,7 @@ registerTopic("KNN",
 
   // Q6b
   {
-    type: "mcq",
+    type: "scq",
     question: "How can accuracy be improved to better handle class imbalances?",
     options: [
       "By increasing the number of features",
@@ -128,7 +128,7 @@ registerTopic("KNN",
 
   // Q7
   {
-    type: "mcq",
+    type: "scq",
     question: "Besides accuracy, which of the following should be considered when choosing hyperparameters?",
     options: [
       "The number of training epochs only",

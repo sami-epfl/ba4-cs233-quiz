@@ -6,7 +6,7 @@ registerTopic("General",
 
   // Q1
   {
-    type: "mcq",
+    type: "scq",
     question: "What parts of the linear regression equation are updated during training?",
     options: [
       "The bias and weights",
@@ -19,7 +19,7 @@ registerTopic("General",
 
   // Q2
   {
-    type: "mcq",
+    type: "scq",
     question: "What's the role of gradient descent in linear regression?",
     options: [
       "Gradient descent helps to determine what type of loss to use when training a model, for example, L1 or L2.",
@@ -32,7 +32,7 @@ registerTopic("General",
 
   // Q3
   {
-    type: "mcq",
+    type: "scq",
     question: "What is the ideal learning rate?",
     options: [
       "The ideal learning rate is problem-dependent.",
@@ -45,7 +45,7 @@ registerTopic("General",
 
   // Q4
   {
-    type: "mcq",
+    type: "scq",
     question: "What's the best batch size when using mini-batch SGD?",
     options: [
       "It depends",
@@ -58,7 +58,7 @@ registerTopic("General",
 
   // Q5
   {
-    type: "mcq",
+    type: "scq",
     question: "Which of the following statements is true?",
     options: [
       "Doubling the learning rate can slow down training.",
@@ -70,7 +70,7 @@ registerTopic("General",
 
   // Q6
   {
-    type: "mcq",
+    type: "scq",
     question: "A model outputs 5 TP, 6 TN, 3 FP, and 2 FN. Calculate the recall.",
     options: [
       "0.714",
@@ -83,7 +83,7 @@ registerTopic("General",
 
   // Q7
   {
-    type: "mcq",
+    type: "scq",
     question: "A model outputs 3 TP, 4 TN, 2 FP, and 1 FN. Calculate the precision.",
     options: [
       "0.6",
@@ -96,7 +96,7 @@ registerTopic("General",
 
   // Q8
   {
-    type: "mcq",
+    type: "scq",
     question: "When should you use accuracy as a metric?",
     options: [
       "As a rough indicator of training progress on balanced datasets, combined with other metrics.",
@@ -110,7 +110,7 @@ registerTopic("General",
 
   // Q9
   {
-    type: "mcq",
+    type: "scq",
     question: "In a medical screening test, missing a sick patient (false negative) is far more dangerous than a false alarm. Which metric should you prioritize?",
     options: [
       "Precision",
@@ -124,7 +124,7 @@ registerTopic("General",
 
   // Q10
   {
-    type: "mcq",
+    type: "scq",
     question: "A spam filter that wrongly blocks legitimate emails causes major disruptions. Which metric should you prioritize to minimize this?",
     options: [
       "Recall",
@@ -138,7 +138,7 @@ registerTopic("General",
 
   // Q11
   {
-    type: "mcq",
+    type: "scq",
     question: "A fraud detection system flags transactions as fraudulent. Each flagged transaction triggers a costly manual review. Which metric should you prioritize?",
     options: [
       "Accuracy",
@@ -152,7 +152,7 @@ registerTopic("General",
 
   // Q12
   {
-    type: "mcq",
+    type: "scq",
     question: "You're building a binary classifier that checks photos of insect traps for whether a dangerous invasive species is present. If the model detects the species, the entomologist on duty is notified. Early detection is critical to preventing an infestation. A false alarm is easy to handle: the entomologist sees the photo was misclassified and marks it as such. Assuming an acceptable accuracy level, which metric should this model be optimized for?",
     options: [
       "Recall",
