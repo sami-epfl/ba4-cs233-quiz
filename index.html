@@ -14,13 +14,12 @@
   </script>
 </head>
 <body>
-  <!-- Stub: lets topic files register safely even before app.js is parsed -->
+  <!-- Stub: buffers topic registrations until app.js engine is ready -->
   <script>
-    window.TOPICS = {};
+    window._topicBuffer = [];
     window.registerTopic = function(name) {
       var qs = Array.prototype.slice.call(arguments, 1);
-      if (!window.TOPICS[name]) window.TOPICS[name] = [];
-      window.TOPICS[name].push.apply(window.TOPICS[name], qs);
+      window._topicBuffer.push([name, qs]);
     };
   </script>
 
@@ -33,6 +32,12 @@
     var _s = document.createElement("script");
     _s.src = _base + "/app.js";
     _s.onload = function() {
+      // Replay buffered topic registrations into the engine's TOPICS
+      if (typeof registerTopic === "function" && window._topicBuffer) {
+        window._topicBuffer.forEach(function(t) {
+          registerTopic.apply(null, [t[0]].concat(t[1]));
+        });
+      }
       if (typeof buildShell === "function" && !document.getElementById("quiz-area")) {
         buildShell(); init();
       }
