@@ -5,20 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quiz</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-</head>
-<body>
   <script src="config.js"></script>
   <script>
-    var _base = location.protocol === "file:" ? QUIZ_CONFIG.engineLocal : QUIZ_CONFIG.engineCdn;
+    var _base = QUIZ_CONFIG._useLocal ? QUIZ_CONFIG.engineLocal : QUIZ_CONFIG.engineCdn;
     var _link = document.createElement("link");
     _link.rel = "stylesheet"; _link.href = _base + "/style.css";
     document.head.appendChild(_link);
-    document.write('<script src="' + _base + '/app.js"><\/script>');
+  </script>
+</head>
+<body>
+  <!-- Stub: lets topic files register safely even before app.js is parsed -->
+  <script>
+    window.TOPICS = {};
+    window.registerTopic = function(name) {
+      var qs = Array.prototype.slice.call(arguments, 1);
+      if (!window.TOPICS[name]) window.TOPICS[name] = [];
+      window.TOPICS[name].push.apply(window.TOPICS[name], qs);
+    };
   </script>
 
   <!-- Topics — add one line here for each new topic file -->
   <script src="topics/general.js"></script>
   <script src="topics/knn.js"></script>
+
+  <!-- Engine loaded last so it picks up all registered topics -->
+  <script>
+    var _s = document.createElement("script");
+    _s.src = _base + "/app.js";
+    document.body.appendChild(_s);
+  </script>
 </body>
 </html>
