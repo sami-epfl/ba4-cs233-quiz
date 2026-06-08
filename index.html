@@ -32,6 +32,11 @@
   <script>
     var _s = document.createElement("script");
     _s.src = _base + "/app.js";
+    _s.onload = function() {
+      if (typeof buildShell === "function" && !document.getElementById("quiz-area")) {
+        buildShell(); init();
+      }
+    };
     document.body.appendChild(_s);
   </script>
 </body>
