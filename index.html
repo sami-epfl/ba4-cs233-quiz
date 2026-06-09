@@ -7,43 +7,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="config.js"></script>
   <script>
-    var _base = QUIZ_CONFIG._useLocal ? QUIZ_CONFIG.engineLocal : QUIZ_CONFIG.engineCdn;
-    var _link = document.createElement("link");
-    _link.rel = "stylesheet"; _link.href = _base + "/style.css";
-    document.head.appendChild(_link);
+    window._engineBase = QUIZ_CONFIG._useLocal ? QUIZ_CONFIG.engineLocal : QUIZ_CONFIG.engineCdn;
+    document.write('<script src="' + window._engineBase + '/loader.js"><\/script>');
   </script>
 </head>
 <body>
-  <!-- Stub: buffers topic registrations until app.js engine is ready -->
-  <script>
-    window._topicBuffer = [];
-    window.registerTopic = function(name) {
-      var qs = Array.prototype.slice.call(arguments, 1);
-      window._topicBuffer.push([name, qs]);
-    };
-  </script>
-
   <!-- Topics — add one line here for each new topic file -->
   <script src="topics/review.js"></script>
   <script src="topics/general.js"></script>
   <script src="topics/knn.js"></script>
-
-  <!-- Engine loaded last so it picks up all registered topics -->
-  <script>
-    var _s = document.createElement("script");
-    _s.src = _base + "/app.js";
-    _s.onload = function() {
-      // Replay buffered topic registrations into the engine's TOPICS
-      if (typeof registerTopic === "function" && window._topicBuffer) {
-        window._topicBuffer.forEach(function(t) {
-          registerTopic.apply(null, [t[0]].concat(t[1]));
-        });
-      }
-      if (typeof buildShell === "function" && !document.getElementById("quiz-area")) {
-        buildShell(); init();
-      }
-    };
-    document.body.appendChild(_s);
-  </script>
 </body>
 </html>
