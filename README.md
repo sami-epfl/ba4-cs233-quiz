@@ -1,4 +1,4 @@
-# CS-233 — Quiz
+# CS-233 Introduction to machine learning — Quiz
 
 **[https://sami-epfl.github.io/ba4-cs233-quiz/](https://sami-epfl.github.io/ba4-cs233-quiz/)**
 
