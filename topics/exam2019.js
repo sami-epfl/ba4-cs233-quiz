@@ -244,7 +244,7 @@ registerTopic("Exam 2019",
   // Q13 — SCQ
   {
     type: "scq",
-    question: `<img src="topics/images/2019_q13.png" style="max-width:420px;display:block;margin:8px auto;border-radius:8px;">Given a 2D dataset with two classes as shown above, and performing dimensionality reduction with PCA and LDA: what is the approximate direction of the first projection vector for each?`,
+    question: `<img src="topics/images/2019_q13.png" style="max-width:100%;width:420px;display:block;margin:8px auto;border-radius:8px;box-sizing:border-box;">Given a 2D dataset with two classes as shown above, and performing dimensionality reduction with PCA and LDA: what is the approximate direction of the first projection vector for each?`,
     options: [
       "y = x for PCA and y = x for LDA",
       "y = -x for PCA and y = x for LDA",
@@ -387,7 +387,7 @@ registerTopic("Exam 2019",
   // Q20 — MCQ
   {
     type: "mcq",
-    question: `<img src="topics/images/2019_q20.png" style="max-width:420px;display:block;margin:8px auto;border-radius:8px;">Consider the two multilayer perceptrons above, where all layers use linear activation functions (f(z) = z). Which of the following statements are true?`,
+    question: `<img src="topics/images/2019_q20.png" style="max-width:100%;width:420px;display:block;margin:8px auto;border-radius:8px;box-sizing:border-box;">Consider the two multilayer perceptrons above, where all layers use linear activation functions (f(z) = z). Which of the following statements are true?`,
     options: [
       "B is expected to fit the training data better than A",
       "B intends to learn a more compact representation than A",
@@ -462,7 +462,7 @@ registerTopic("Exam 2019",
   // Q23 — SCQ
   {
     type: "scq",
-    question: `<img src="topics/images/2019_q23.png" style="max-width:480px;display:block;margin:8px auto;border-radius:8px;">You have four architectures shown above — (a) GAN, (b) RNN, (c) U-Net, (d) ResNet — and four tasks: (1) segment the hippocampus of MRI brain images, (2) classify household item images into 20 classes, (3) predict future motion of a car from a video stream, (4) generate new Van Gogh-style paintings. Which correspondence is most suitable?`,
+    question: `<img src="topics/images/2019_q23.png" style="max-width:100%;width:480px;display:block;margin:8px auto;border-radius:8px;box-sizing:border-box;">You have four architectures shown above — (a) GAN, (b) RNN, (c) U-Net, (d) ResNet — and four tasks: (1) segment the hippocampus of MRI brain images, (2) classify household item images into 20 classes, (3) predict future motion of a car from a video stream, (4) generate new Van Gogh-style paintings. Which correspondence is most suitable?`,
     options: [
       "a-2, b-1, c-4, d-3",
       "a-3, b-1, c-4, d-2",
