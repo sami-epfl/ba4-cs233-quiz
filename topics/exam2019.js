@@ -2,23 +2,6 @@
 //  CS233 — 2019 Exam (corrected)
 // ============================================================
 
-// ── Explanation helpers using the engine's CSS variables ──────────────────
-const _section = (title, color, body) =>
-  `<div style="margin:8px 0 4px;padding:8px 11px;background:var(--bg);border:1px solid var(--border);border-left:3px solid ${color};border-radius:0 8px 8px 0">` +
-  `<div style="font-size:.68em;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:${color};margin-bottom:5px">${title}</div>` +
-  `<div style="display:flex;flex-direction:column;gap:4px">${body}</div>` +
-  `</div>`;
-
-const _row = (color, text) =>
-  `<div style="padding-left:8px;border-left:2px solid ${color}44;font-size:.95em;line-height:1.5">${text}</div>`;
-
-const _badge = (cls, text) => `<span class="opt-tag ${cls}">${text}</span>`;
-const _ok    = () => _badge("tag-correct", "✓");
-const _ko    = () => _badge("tag-wrong",   "✗");
-const _tip   = () => _badge("tag-also",    "💡");
-
-const _code  = t => `<code style="background:var(--surface);color:var(--accent);padding:1px 5px;border-radius:4px;font-size:.88em">${t}</code>`;
-
 registerTopic("Exam 2019",
 
   // Q1 — MCQ
@@ -32,16 +15,12 @@ registerTopic("Exam 2019",
       "With K-means, different distance metrics will NOT change the final assignment of each cluster",
       "The K-means algorithm is unsupervised"
     ],
-    answers: [4],
+    answer: [4],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Unsupervised</strong> — K-means groups data using distances only, no labels needed.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>K is not unknown</strong> — K must be fixed by the user before running.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Converges, but not to the best solution</strong> — The objective is non-increasing so it always converges, but only to a local minimum.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Metric does matter</strong> — Switching L₁ ↔ L₂ ↔ cosine can change which cluster each point belongs to.`)
-      )
+      "<strong style='color:var(--correct)'>✓ K-means is unsupervised</strong> — It groups data using distances only. No labels, no annotations, no supervisor. This makes it useful for discovering hidden structure when you don't know what you're looking for.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ K is NOT unknown</strong> — K must be chosen by the user <em>before</em> running the algorithm. This is one of K-means' biggest practical weaknesses: choosing K badly gives meaningless clusters. Use the elbow method or silhouette score to help.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Converges ≠ globally optimal</strong> — The objective (within-cluster sum of squares) is non-increasing at each step, so the algorithm always terminates. But it only finds a <em>local</em> minimum — random initializations often give different results. This is why we run K-means multiple times with random restarts (e.g. K-means++).<br>" +
+      "<strong style='color:var(--wrong)'>✗ Distance metric matters</strong> — Using L₁ vs L₂ vs cosine distance changes the notion of 'nearest centroid', which directly affects cluster boundaries. Always think carefully about your distance metric."
   },
 
   // Q2 — MCQ
@@ -54,15 +33,11 @@ registerTopic("Exam 2019",
       "Use the Euclidean distance with the raw data",
       "Scale each attribute appropriately"
     ],
-    answers: [3],
+    answer: [3],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Scale each attribute</strong> — Features are in completely different units (kg, m, s). Without scaling, weight (e.g. 70) would dominate height (e.g. 1.75) in every distance computation.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Raw data + any distance</strong> — Whether L₁ or L₂, high-magnitude features dominate. The metric choice alone can't fix this.`) +
-        _row("var(--wrong)", `${_ko()} <strong>K = 100 for 2 classes</strong> — We want to separate males from females, so K = 2 is the right choice. K = 100 produces arbitrary clusters useless for this task.`)
-      )
+      "<strong style='color:var(--correct)'>✓ Scale each attribute</strong> — The features live in completely different units: weight can be ~70 kg while height is ~1.75 m. Without scaling, weight numerically dominates every distance computation and height becomes irrelevant. This is not about the choice of distance metric — it affects ALL metrics equally. Standardize (zero mean, unit variance) before computing any distances.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Raw data + L₁ or L₂</strong> — Switching metrics doesn't help if features are on wildly different scales. The unit problem exists regardless.<br>" +
+      "<strong style='color:var(--wrong)'>✗ K = 100 for 2 classes</strong> — We want exactly 2 clusters (male/female), so K = 2. Yes, more clusters reduce the within-cluster sum of squares, but that's vacuously true: K = N gives zero. The goal is meaningful grouping, not minimizing a metric."
   },
 
   // Q3 — MCQ
@@ -75,16 +50,12 @@ registerTopic("Exam 2019",
       "The SVM algorithm aims to minimize the distance between the decision boundary and the point closest to this boundary",
       "The support vectors are subset of the data points"
     ],
-    answers: [3],
+    answer: [3],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Support vectors ⊆ data points</strong> — They are exactly the training points lying on or inside the margin. All other points are irrelevant to the solution.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Quadratic program, not linear</strong> — The objective ${_code("½‖w‖²")} is quadratic; the constraints are linear.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Maximizes margin, doesn't minimize it</strong> — SVM maximizes the distance to the nearest points.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Dual = lower bound</strong> — For a minimization problem, the Lagrangian dual always gives a lower bound. Strong duality holds at optimum (KKT conditions).`)
-      )
+      "<strong style='color:var(--correct)'>✓ Support vectors ⊆ training points</strong> — Only the points sitting exactly on or within the margin matter. All other points could be removed and the model would be identical. This is why SVMs are said to be sparse in the data — only a few key examples define the solution. This property is also exploited by the kernel trick.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Quadratic program, not linear</strong> — The objective ½‖w‖² is quadratic; the constraints y_i(wᵀx_i + b) ≥ 1 are linear. A linear program has a linear objective — not the case here.<br>" +
+      "<strong style='color:var(--wrong)'>✗ SVM maximizes the margin</strong> — This is the key insight of SVM. A wider margin generalizes better. Minimizing the distance to the nearest point is the opposite goal.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Dual provides a lower bound</strong> — For a convex minimization problem, the Lagrangian dual always gives a lower bound. With KKT conditions (which SVM satisfies), strong duality holds and the bounds coincide at the optimum."
   },
 
   // Q4 — MCQ
@@ -97,16 +68,14 @@ registerTopic("Exam 2019",
       "If ξᵢ ≥ 1, sample i is correctly classified",
       "If 0 < ξᵢ ≤ 1, sample i lies inside the margin"
     ],
-    answers: [0, 3],
+    answer: [0, 3],
     explanation:
-      _section("Slack variable ξᵢ — interpretation", "var(--accent)",
-        _row("var(--accent)", `${_code("ξᵢ = 0")} → outside or on the margin, correctly classified`) +
-        _row("var(--accent)", `${_code("0 < ξᵢ ≤ 1")} → inside the margin, but still on the correct side — correctly classified`) +
-        _row("var(--accent)", `${_code("ξᵢ > 1")} → misclassified (wrong side of the boundary)`)
-      ) +
-      _section("Effect of C", "var(--text-muted)",
-        _row("var(--text-muted)", `${_tip()} <strong>Larger C</strong> penalizes slack more → fewer violations → harder margin. Larger C means <em>fewer</em> misclassifications, not more.`)
-      )
+      "<strong>Why do slack variables matter?</strong> Hard-margin SVM fails when data is not linearly separable. Slack variables ξᵢ ≥ 0 allow violations, and C penalizes them. Understanding what each range of ξᵢ means is critical:<br><br>" +
+      "— ξᵢ = 0 → correctly classified and outside (or on) the margin<br>" +
+      "— <strong style='color:var(--correct)'>0 &lt; ξᵢ ≤ 1</strong> → inside the margin, but on the <em>correct side</em> of the decision boundary → <strong>correctly classified</strong> ✓<br>" +
+      "— <strong style='color:var(--correct)'>0 &lt; ξᵢ ≤ 1</strong> → also means the point <strong>lies inside the margin</strong> ✓<br>" +
+      "— ξᵢ &gt; 1 → <em>misclassified</em> (on the wrong side of the boundary)<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Larger C → fewer violations, not more</strong> — C is the penalty for each slack variable. Higher C = more expensive to violate constraints → the optimizer tries harder to classify correctly. C → ∞ recovers hard-margin SVM. C → 0 ignores all violations."
   },
 
   // Q5 — SCQ
@@ -121,16 +90,11 @@ registerTopic("Exam 2019",
     ],
     answer: 0,
     explanation:
-      _section("RBF kernel = similarity score in (0, 1]", "var(--accent)",
-        _row("var(--accent)", `${_code("k(xᵢ, xⱼ) = exp(−‖xᵢ − xⱼ‖² / 2σ²)")}`)
-      ) +
-      _section("Evaluating both cases", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>z₁ close to x</strong> → ${_code("‖z₁ − x‖² ≈ 0")} → ${_code("exp(0) = 1")} → k ≈ 1`) +
-        _row("var(--correct)", `${_ok()} <strong>z₂ far from x</strong> → ${_code("‖z₂ − x‖²")} large → ${_code("exp(−∞) → 0")} → k ≈ 0`)
-      ) +
-      _section("Why B and D are impossible", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} The RBF output is <strong>always in (0, 1]</strong>. Values above 1 or below 0 are mathematically impossible.`)
-      )
+      "The RBF kernel measures <strong>geometric similarity</strong> and always outputs a value in <strong>(0, 1]</strong> — it's an exponential of a non-positive number.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ z₁ close to x</strong> → ‖z₁ − x‖² ≈ 0 → exp(−0) = <strong>1</strong> → k(z₁, x) ≈ 1<br>" +
+      "<strong style='color:var(--correct)'>✓ z₂ far from x</strong> → ‖z₂ − x‖² → ∞ → exp(−∞) = <strong>0</strong> → k(z₂, x) ≈ 0<br><br>" +
+      "<strong>Why does this matter?</strong> In kernel SVM or kernel ridge regression, the prediction for a new point x is a weighted sum of k(x, xᵢ) over training points. Only nearby training points (high k value) significantly influence the prediction — this is why the RBF kernel produces local decision boundaries. σ² controls the 'reach': large σ → smooth global influence, small σ → sharp local influence.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Options B and D</strong> — The argument of exp is always ≤ 0, so the output is always in (0, 1]. Values above 1 or negative are mathematically impossible."
   },
 
   // Q6 — MCQ
@@ -144,17 +108,14 @@ registerTopic("Exam 2019",
       "Results in non-linear decision boundaries using algorithms designed originally for linear models",
       "Generates a symmetric and invertible kernel matrix"
     ],
-    answers: [0, 2, 3],
+    answer: [0, 2, 3],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Representer theorem</strong> — The optimal solution can be written as ${_code("w = Σ αᵢ xᵢ")}, a linear combination of training samples. This is what makes kernelization possible.`) +
-        _row("var(--correct)", `${_ok()} <strong>Infinite-dimensional features</strong> — The RBF kernel corresponds to an infinite-dimensional feature map, computed implicitly via ${_code("k(x, x') = φ(x)·φ(x')")}.`) +
-        _row("var(--correct)", `${_ok()} <strong>Non-linear boundaries</strong> — A linear algorithm in feature space becomes non-linear in the original input space.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>N×N, not D×D</strong> — The kernel trick replaces the D×D system with an N×N system. Useful when D ≫ N, not the reverse.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Not necessarily invertible</strong> — The kernel matrix K is symmetric and positive semi-definite, but not guaranteed invertible.`)
-      )
+      "<strong>Why is the kernel trick so powerful?</strong> It lets linear models solve non-linear problems without ever explicitly computing high- (or infinite-) dimensional feature vectors.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ Representer theorem</strong> — The optimal solution is w* = Σᵢ αᵢ xᵢ, a linear combination of training points. This means inner products φ(xᵢ)·φ(xⱼ) are all we ever need — not φ itself. Replace every dot product with k(xᵢ, xⱼ) and you're done.<br>" +
+      "<strong style='color:var(--correct)'>✓ Infinite-dimensional spaces</strong> — The RBF kernel k(x, x') = exp(−‖x−x'‖²) corresponds to a Hilbert space of infinite dimension. We compute this implicitly in O(D) time — not O(∞).<br>" +
+      "<strong style='color:var(--correct)'>✓ Non-linear boundaries</strong> — A linear model in φ-space is non-linear in x-space. One algorithm, arbitrarily complex boundaries.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ N×N, not D×D</strong> — The kernel trick replaces a D×D computation with an N×N one. It is only useful when D ≫ N. If N ≫ D, work in the original feature space instead.<br>" +
+      "<strong style='color:var(--wrong)'>✗ K is symmetric but not always invertible</strong> — K is positive semi-definite (PSD) by Mercer's theorem. PSD does not imply invertibility (some eigenvalues may be zero)."
   },
 
   // Q7 — MCQ
@@ -169,18 +130,15 @@ registerTopic("Exam 2019",
       "In general, the gap between the validation set loss and the training set loss increases with the iterations",
       "Regularization of the model parameters will typically reduce overfitting"
     ],
-    answers: [2, 3, 4, 5],
+    answer: [2, 3, 4, 5],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Val loss > Train loss</strong> — The model memorizes training data, so training loss is low while validation loss stays high.`) +
-        _row("var(--correct)", `${_ok()} <strong>More data reduces overfitting</strong> — With more samples the model can't memorize everything and is forced to generalize.`) +
-        _row("var(--correct)", `${_ok()} <strong>Gap grows with iterations</strong> — Past the optimal stopping point, training loss keeps falling while validation loss rises.`) +
-        _row("var(--correct)", `${_ok()} <strong>Regularization reduces overfitting</strong> — L1/L2 penalties constrain weights, reducing model complexity.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Train loss > val loss</strong> — This is the signature of underfitting, not overfitting.`) +
-        _row("var(--wrong)", `${_ko()} <strong>More complex = less overfit</strong> — More complex models are more prone to overfitting, not less.`)
-      )
+      "<strong>Overfitting = memorizing instead of learning.</strong> The model performs well on training data but fails to generalize. Recognizing and combating it is one of the most critical skills in ML.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ Val loss &gt; Train loss</strong> — This is the definition of overfitting. The model has 'memorized' the training data, including its noise, so it fails on unseen examples.<br>" +
+      "<strong style='color:var(--correct)'>✓ More data reduces overfitting</strong> — With more diverse examples, the model cannot memorize each one and must generalize. This is often the most effective fix when feasible.<br>" +
+      "<strong style='color:var(--correct)'>✓ Gap grows over iterations</strong> — As training progresses past the optimal checkpoint, training loss keeps falling but validation loss begins to rise — the classic overfitting curve. Early stopping exploits this.<br>" +
+      "<strong style='color:var(--correct)'>✓ Regularization reduces overfitting</strong> — L2 (ridge), L1 (lasso), dropout, and other penalties constrain the model's freedom to memorize.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Train loss &gt; val loss</strong> — This describes underfitting. When a model overfits, train loss is LOW.<br>" +
+      "<strong style='color:var(--wrong)'>✗ More complexity = less overfit</strong> — Exactly backwards. More parameters = more capacity to memorize = more overfitting risk."
   },
 
   // Q8 — SCQ
@@ -195,15 +153,11 @@ registerTopic("Exam 2019",
     ],
     answer: 3,
     explanation:
-      _section("Why Recall is critical here", "var(--correct)",
-        _row("var(--correct)", `${_ok()} ${_code("Recall = TP / (TP + FN)")} — Measures how many actual drowsy drivers are correctly detected.`) +
-        _row("var(--correct)", `A <strong>False Negative</strong> (missed drowsy driver) can cause a fatal accident. A <strong>False Positive</strong> (unnecessary alert) is merely annoying. We must minimize FN → maximize Recall.`)
-      ) +
-      _section("Why the others fall short", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Accuracy</strong> — Misleading on imbalanced data. A model predicting "attentive" every time can score 95% while missing all drowsy drivers.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Precision</strong> — ${_code("TP / (TP + FP)")} focuses on false alarms, not missed detections. Wrong priority.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Loss value</strong> — A training objective, not a deployable evaluation metric.`)
-      )
+      "<strong>Not all mistakes are equal.</strong> The choice of metric must reflect the cost asymmetry of errors.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ Recall = TP / (TP + FN)</strong> — Measures: of all actually drowsy drivers, how many did we catch? A <strong>False Negative</strong> (we predict attentive, driver is drowsy) → <strong>car accident</strong>. A <strong>False Positive</strong> (unnecessary alert) → minor annoyance. The cost of FN vastly outweighs FP → maximize Recall.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Accuracy</strong> — Drowsiness is rare (maybe 5% of drives). A model that always predicts 'attentive' gets 95% accuracy while catching zero drowsy drivers — completely useless and dangerous.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Precision = TP / (TP + FP)</strong> — Measures how many alerts are genuine. High precision = few false alarms, but a model can have perfect precision by only alerting when absolutely certain — missing many drowsy drivers.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Loss value</strong> — An optimization objective used during training, not a meaningful business or safety metric for deployment decisions."
   },
 
   // Q9 — MCQ
@@ -217,17 +171,13 @@ registerTopic("Exam 2019",
       "If you have to use additional data, using data from the class who graduated in 2018 might be more useful than that of 2010",
       "Linear regression is typically a better method than deep neural networks if the dataset is small"
     ],
-    answers: [3, 4],
+    answer: [3, 4],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>2018 data is more relevant</strong> — The 2018 cohort entered a similar job market as 2019. The 2010 class graduated during a post-crisis period with very different conditions.`) +
-        _row("var(--correct)", `${_ok()} <strong>Linear regression wins on small data</strong> — Deep networks have millions of parameters and need large datasets. On small datasets, simpler models generalize better.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Correlation ≠ no exceptions</strong> — A positive correlation means higher grades tend to predict higher salaries on average. It doesn't rule out individual exceptions.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Large bias ≠ uninformative features</strong> — The bias captures the mean prediction level. A large intercept just shifts predictions up, it says nothing about feature importance.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Neural networks are less interpretable</strong> — Linear regression weights are directly readable. Neural networks are black boxes.`)
-      )
+      "<strong style='color:var(--correct)'>✓ 2018 class is more relevant (distribution shift)</strong> — The 2018 cohort entered a similar job market as 2019. The 2010 class graduated in a very different economic environment (post-financial crisis). Using data from a different distribution degrades your model. Always consider temporal and contextual distribution shift.<br>" +
+      "<strong style='color:var(--correct)'>✓ Linear regression wins on small datasets</strong> — Deep networks have millions of parameters and require large amounts of data to avoid overfitting. On small datasets, a simple model with few parameters generalizes far better. More complex ≠ better when data is scarce.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Correlation ≠ strict rule</strong> — A positive correlation is a statistical tendency across the population. Individual exceptions always exist (high achievers with low salaries, dropouts who became billionaires). Correlation is never a hard bound.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Large bias ≠ useless features</strong> — The bias (intercept) simply shifts all predictions by a constant. It reflects the mean of y after centering, not the importance of features. Feature importance is captured by the weights w, not the bias.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Neural networks are NOT more interpretable</strong> — Quite the opposite. Linear regression weights directly tell you the effect of each feature. Neural networks are black boxes requiring separate interpretability tools (SHAP, attention maps, etc.)."
   },
 
   // Q10 — MCQ
@@ -240,19 +190,13 @@ registerTopic("Exam 2019",
       "Adding more features",
       "Adding ridge regularization on the model weights"
     ],
-    answers: [1, 2],
+    answer: [1, 2],
     explanation:
-      _section("Underfitting = model too simple", "var(--accent)",
-        _row("var(--accent)", `${_tip()} Both training and validation loss are high. The fix is to <strong>increase model capacity</strong>.`)
-      ) +
-      _section("What helps", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Polynomial feature expansion</strong> — Adding ${_code("x², x³, x₁x₂, …")} lets the model capture non-linear relationships while staying linear in parameters.`) +
-        _row("var(--correct)", `${_ok()} <strong>Adding more features</strong> — New informative features give the model more signal, increasing predictive power.`)
-      ) +
-      _section("What makes it worse", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Removing features</strong> — Fewer features = simpler model = more underfitting.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Ridge regularization</strong> — Regularization further constrains the model. If it already underfits, adding constraints makes it worse.`)
-      )
+      "<strong>Underfitting = the model is too simple to capture the true pattern.</strong> Both training and validation loss are high. The fix is always to <em>increase model capacity</em>.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ Polynomial feature expansion</strong> — Add x², x³, x₁x₂, … as new features. The model stays linear in its parameters (so you still get the closed-form solution) but can now fit non-linear relationships in the original input space.<br>" +
+      "<strong style='color:var(--correct)'>✓ Adding more features</strong> — New informative predictors give the model more signal to learn from, directly increasing predictive power.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Removing features</strong> — Fewer features = less information = simpler model = more underfitting. The opposite of what's needed.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Ridge regularization</strong> — Ridge penalizes large weights, further restricting what the model can express. If the model already underfits, adding constraints makes it underfit even more. <em>Reduce</em> regularization when underfitting, <em>add</em> it when overfitting."
   },
 
   // Q11 — MCQ
@@ -265,19 +209,16 @@ registerTopic("Exam 2019",
       "The model overfits as the regularization parameter λ tends to ∞",
       "Nothing can be said"
     ],
-    answers: [0, 1],
+    answer: [0, 1],
     explanation:
-      _section("Ridge regression", "var(--accent)",
-        _row("var(--accent)", `Objective: ${_code("min ‖Xw − y‖² + λ‖w‖²")}`) +
-        _row("var(--accent)", `Solution: ${_code("w* = (XᵀX + λI)⁻¹Xᵀy")}`)
-      ) +
-      _section("As λ → ∞", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Weights → 0</strong> — The regularization term dominates and forces all weights toward zero.`) +
-        _row("var(--correct)", `${_ok()} <strong>Model underfits</strong> — With all weights near zero, the model predicts approximately the mean of y regardless of input.`)
-      ) +
-      _section("Bias–variance tradeoff", "var(--text-muted)",
-        _row("var(--text-muted)", `${_tip()} Small λ → low bias, high variance (overfit). Large λ → high bias, low variance (underfit). Optimal λ found via cross-validation.`)
-      )
+      "<strong>Ridge closed-form:</strong> w* = (XᵀX + λI)⁻¹ Xᵀy<br><br>" +
+      "As λ → ∞: the term λI dominates → (XᵀX + λI)⁻¹ → (1/λ)I → 0 → <strong style='color:var(--correct)'>w* → 0</strong> ✓<br>" +
+      "With w ≈ 0: the model predicts ŷ ≈ 0 regardless of input → it completely ignores the data → <strong style='color:var(--correct)'>underfitting</strong> ✓<br><br>" +
+      "<strong>The bias-variance tradeoff:</strong><br>" +
+      "— Small λ → weights unconstrained → fits training data well → risk of overfitting (high variance)<br>" +
+      "— Large λ → weights pushed to zero → ignores data → underfitting (high bias)<br>" +
+      "— Optimal λ balances the two, found via <strong>cross-validation</strong>.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Does not overfit</strong> — λ → ∞ drives the model toward maximum simplicity (constant prediction). Overfitting is the opposite extreme (λ → 0)."
   },
 
   // Q12 — MCQ
@@ -291,17 +232,13 @@ registerTopic("Exam 2019",
       "PCA is an unsupervised method which can be used to do data feature manipulation",
       "In PCA, the principal components are ordered by the magnitude of the eigenvectors"
     ],
-    answers: [0, 1, 2, 3],
+    answer: [0, 1, 2, 3],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Uncorrelated features</strong> — PCA diagonalizes the covariance matrix. Orthonormal eigenvectors → zero covariance in the new basis.`) +
-        _row("var(--correct)", `${_ok()} <strong>Noise reduction</strong> — Low-variance components often capture noise. Dropping them removes noise while retaining signal.`) +
-        _row("var(--correct)", `${_ok()} <strong>Perfect reconstruction</strong> — Keeping all components makes the transformation invertible. No information is lost.`) +
-        _row("var(--correct)", `${_ok()} <strong>Unsupervised</strong> — PCA uses only the data matrix X, no labels needed.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Ordered by eigenvalue, not eigenvector magnitude</strong> — Components are sorted by variance explained (eigenvalue). All eigenvectors are unit vectors.`)
-      )
+      "<strong style='color:var(--correct)'>✓ Uncorrelated features after PCA</strong> — PCA diagonalizes the covariance matrix. In the new basis of eigenvectors, the covariance between any two different components is exactly zero. This decorrelation is what makes PCA useful as a preprocessing step for methods that assume independent features.<br>" +
+      "<strong style='color:var(--correct)'>✓ Noise reduction</strong> — Low-eigenvalue components capture little variance — often just noise. Dropping them acts as a denoising filter while retaining the high-variance signal components. This is widely used in image processing and signal analysis.<br>" +
+      "<strong style='color:var(--correct)'>✓ Lossless reconstruction possible</strong> — Keeping all N components makes the transformation orthogonal and invertible: X = ZVᵀ recovers X exactly. You only lose information when you drop components.<br>" +
+      "<strong style='color:var(--correct)'>✓ Unsupervised</strong> — PCA uses only X (no labels). It can be used before training a supervised model to reduce dimensionality, remove collinearity, or visualize data.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Ordered by eigenvalue magnitude, not eigenvector magnitude</strong> — Every eigenvector is normalized to unit length. The ordering is by the corresponding <em>eigenvalue</em>, which represents the variance explained by that component. Largest eigenvalue = first principal component."
   },
 
   // Q13 — SCQ
@@ -316,15 +253,10 @@ registerTopic("Exam 2019",
     ],
     answer: 3,
     explanation:
-      _section("PCA — maximize variance", "var(--accent)",
-        _row("var(--accent)", `${_ok()} Data is spread along ${_code("y = x")}. PCA projects onto the direction of greatest variance → ${_code("y = x")}.`)
-      ) +
-      _section("LDA — maximize class separation", "var(--correct)",
-        _row("var(--correct)", `${_ok()} The two classes overlap along y = x but are separated <em>perpendicularly</em>. LDA projects onto the direction that best separates the classes → ${_code("y = −x")}.`)
-      ) +
-      _section("Key distinction", "var(--text-muted)",
-        _row("var(--text-muted)", `${_tip()} PCA is <strong>unsupervised</strong> (ignores labels). LDA is <strong>supervised</strong> (uses class information). Same data, completely different projections.`)
-      )
+      "<strong>This question tests the fundamental difference between PCA and LDA.</strong><br><br>" +
+      "<strong style='color:var(--correct)'>✓ PCA → y = x (diagonal direction)</strong> — PCA is unsupervised. It ignores class labels and finds the direction of <em>maximum variance</em> in the data. Looking at the scatter plot, data points spread diagonally from bottom-left to top-right along y = x. PCA projects onto that direction.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ LDA → y = −x (anti-diagonal)</strong> — LDA is supervised. It finds the direction that <em>maximizes class separability</em> (between-class variance) while minimizing within-class scatter. The two classes overlap along y = x but are clearly separated perpendicular to it, along y = −x. LDA finds that separating direction.<br><br>" +
+      "<strong>Key insight:</strong> PCA and LDA can produce orthogonal projections from the same data. PCA answers 'where is most variance?' — LDA answers 'where are classes most separated?' These objectives can point in completely different directions."
   },
 
   // Q14 — SCQ
@@ -339,14 +271,12 @@ registerTopic("Exam 2019",
     ],
     answer: 3,
     explanation:
-      _section("Algebraic derivation", "var(--accent)",
-        _row("var(--accent)", `Start: ${_code("(1/N) X̄X̄ᵀ cᵢ = λᵢ cᵢ")}`) +
-        _row("var(--accent)", `Multiply left by X̄ᵀ: ${_code("(1/N) X̄ᵀX̄ (X̄ᵀcᵢ) = λᵢ (X̄ᵀcᵢ)")}`) +
-        _row("var(--accent)", `This is ${_code("S · bᵢ = λᵢ bᵢ")} with ${_code("bᵢ = X̄ᵀcᵢ")}. ✓`)
-      ) +
-      _section("Why this matters", "var(--text-muted)",
-        _row("var(--text-muted)", `${_tip()} When D > N, computing eigenvectors of the small N×N matrix M and recovering D-dimensional eigenvectors via ${_code("bᵢ = X̄ᵀcᵢ")} is much cheaper than solving the full D×D system.`)
-      )
+      "<strong>Why does this matter?</strong> When you have N samples with D features and D ≫ N (common in genomics, NLP, image datasets), the covariance matrix S is D×D — huge and expensive to diagonalize. The trick: diagonalize M = (1/N)X̄X̄ᵀ which is only N×N, then recover the eigenvectors of S for free.<br><br>" +
+      "<strong>Derivation:</strong><br>" +
+      "Given: (1/N) X̄X̄ᵀ cᵢ = λᵢ cᵢ<br>" +
+      "Left-multiply by X̄ᵀ: (1/N) X̄ᵀX̄ (X̄ᵀcᵢ) = λᵢ (X̄ᵀcᵢ)<br>" +
+      "This is S · bᵢ = λᵢ bᵢ with <strong style='color:var(--correct)'>bᵢ = X̄ᵀcᵢ</strong> ✓<br><br>" +
+      "The same eigenvalue λᵢ appears in both equations — only the eigenvectors differ (cᵢ lives in ℝᴺ, bᵢ lives in ℝᴰ). This is the computational foundation of <strong>efficient high-dimensional PCA</strong>."
   },
 
   // Q15 — MCQ
@@ -360,16 +290,12 @@ registerTopic("Exam 2019",
       "The decision boundary becomes smoother as we decrease the value of k",
       "The training time is longer for a 10-NN classifier than for a 1-NN classifier"
     ],
-    answers: [0],
+    answer: [0],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Larger k → smoother boundary</strong> — With k = 1, each point is decided by its single nearest neighbor → jagged, high-variance boundary. As k grows, averaging over more neighbors smooths the boundary.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Non-parametric, not parametric</strong> — k-NN has no fixed parameter vector. It stores the entire training set and classifies at inference time.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Works for regression too</strong> — k-NN regression predicts the average label of the k nearest neighbors.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Training time is the same (≈ zero)</strong> — k-NN stores data without training. All computation happens at prediction time, regardless of k.`)
-      )
+      "<strong style='color:var(--correct)'>✓ Larger k → smoother decision boundary</strong> — With k = 1, each point is decided by its single nearest neighbor: the boundary is extremely jagged and memorizes individual noise points (high variance). As k grows, predictions are averaged over more neighbors, smoothing out noise and producing more regular boundaries. k → N gives a constant prediction.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ k-NN is non-parametric</strong> — A parametric model has a fixed-size parameter vector (like w in linear regression). k-NN has no such vector: it stores the entire training set and performs all computation at test time. Memory grows with N, and inference time is O(ND) per query.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Works for regression too</strong> — k-NN regression predicts the average (or weighted average) of the k nearest neighbors' values. It's a perfectly valid non-linear regression method.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Training time is the same (essentially zero)</strong> — k-NN 'trains' by storing data — no optimization loop. The value of k has no effect on training time. It <em>does</em> affect inference time for certain implementations."
   },
 
   // Q16 — MCQ
@@ -383,17 +309,13 @@ registerTopic("Exam 2019",
       "The prediction found as the output of the sigmoid function or the softmax function corresponds to the probability of the class assignment",
       "In logistic regression, we pass the result of the linear model wᵀx through a step function, which gives us a discrete output"
     ],
-    answers: [1, 3],
+    answer: [1, 3],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Robust to outliers</strong> — The cross-entropy loss saturates for confident predictions. A far outlier barely affects the gradient. Linear regression uses squared loss which grows unboundedly.`) +
-        _row("var(--correct)", `${_ok()} <strong>Output = probability</strong> — Sigmoid (binary) and softmax (multi-class) produce calibrated probabilities summing to 1.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Classification, not regression</strong> — Despite its name, logistic regression is a classifier.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Regularization is possible</strong> — L1 and L2 penalties are widely used and available in all standard libraries.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Uses sigmoid, not a step function</strong> — A step function is non-differentiable, making gradient descent impossible.`)
-      )
+      "<strong style='color:var(--correct)'>✓ Robust to outliers</strong> — Cross-entropy loss is −log(ŷ) for a correct prediction. As the model becomes very confident (ŷ → 1), the gradient saturates and the outlier has little influence. By contrast, linear regression with squared loss penalizes far-away points quadratically — one extreme outlier can completely shift the decision boundary.<br>" +
+      "<strong style='color:var(--correct)'>✓ Output = probability</strong> — Sigmoid outputs P(y=1|x) ∈ (0,1). Softmax outputs a probability distribution over C classes summing to 1. This probabilistic interpretation is what makes logistic regression useful for risk estimation, not just binary decisions.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ It's a classification method</strong> — Despite the name 'regression', logistic regression outputs class probabilities and is used for classification. The name is historical.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Regularization is standard</strong> — L1 gives sparse weights (feature selection), L2 shrinks them. Both are routinely used and available in all ML libraries.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Uses sigmoid, not a step function</strong> — A step function (heaviside) is non-differentiable at 0 and piecewise constant elsewhere. Gradient descent cannot work on it. The sigmoid is smooth everywhere and has a clean gradient."
   },
 
   // Q17 — MCQ
@@ -408,18 +330,14 @@ registerTopic("Exam 2019",
       "Since it does not have a closed form solution, we have to use an iterative optimization method such as gradient descent",
       "It is not a differentiable loss function, therefore we cannot use gradient descent"
     ],
-    answers: [0, 1, 2, 4],
+    answer: [0, 1, 2, 4],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Loss = 0 when perfect</strong> — If the model predicts probability 1 for the true class: ${_code("−ln(1) = 0")}.`) +
-        _row("var(--correct)", `${_ok()} <strong>Probabilities sum to 1</strong> — Softmax output is a valid probability distribution.`) +
-        _row("var(--correct)", `${_ok()} <strong>Softmax of Wxᵢ</strong> — Pipeline: linear model → softmax → class probabilities.`) +
-        _row("var(--correct)", `${_ok()} <strong>No closed form → gradient descent</strong> — Unlike ridge regression, cross-entropy has no closed-form minimizer.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Statement D is false</strong> — For a sample in class 0, both [0 1 0 0 0] and [0 0 0 0 1] assign probability 0 to the true class. ${_code("−ln(0) = ∞")} in both cases — the loss is identical.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Cross-entropy is differentiable</strong> — Log and softmax are smooth everywhere. Gradient descent works perfectly.`)
-      )
+      "<strong style='color:var(--correct)'>✓ Loss = 0 when perfect</strong> — For a one-hot label y, only the term for the true class k* matters: −ln(ŷ^(k*)). If the model predicts probability 1.0 for the true class, −ln(1) = 0. This is the theoretical floor — in practice, we never quite reach it.<br>" +
+      "<strong style='color:var(--correct)'>✓ Probabilities sum to 1</strong> — Softmax: ŷ⁽ᵏ⁾ = exp(Wₖ xᵢ) / ∑ⱼ exp(Wⱼ xᵢ). The denominator normalizes the output into a valid probability distribution.<br>" +
+      "<strong style='color:var(--correct)'>✓ Pipeline: linear → softmax</strong> — The model computes Wxᵢ (raw scores called 'logits'), then passes them through softmax to get probabilities. Simple, clean, and differentiable end-to-end.<br>" +
+      "<strong style='color:var(--correct)'>✓ No closed form → gradient descent</strong> — Unlike ridge regression (XᵀX invertible → closed form), cross-entropy's log-softmax composition makes the normal equations impossible to solve analytically. GD is mandatory.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Statement D is false</strong> — For a sample in class 0 (y = [1 0 0 0 0]), ŷ⁰ is the probability assigned to class 0. Both predictions [0 0 0 0 1] and [0 1 0 0 0] assign ŷ⁰ = 0 → loss = −ln(0) = ∞ in both cases. The loss is identical: infinite.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Cross-entropy is differentiable</strong> — log and softmax are smooth everywhere. The gradient ∂L/∂W = ŷ − y has an especially clean form, which is why this loss is the standard choice."
   },
 
   // Q18 — MCQ
@@ -433,17 +351,13 @@ registerTopic("Exam 2019",
       "You should not use the RBF kernel since you would then have to solve kernel ridge regression using an iterative method; there is no closed form solution",
       "Using the kernel trick is a good idea because your data is very high-dimensional (D ≫ N), and thus kernel ridge regression will be computationally efficient"
     ],
-    answers: [0, 4],
+    answer: [0, 4],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Always cross-validate λ</strong> — λ controls the bias-variance tradeoff regardless of kernel choice.`) +
-        _row("var(--correct)", `${_ok()} <strong>Efficient when D ≫ N</strong> — The kernel trick replaces a D×D system with an N×N system. When D ≫ N, this is far cheaper.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>RBF is not slow to evaluate</strong> — We compute ${_code("k(x, x') = exp(−‖x − x'‖² / 2σ²)")} directly. The infinite-dimensional mapping is implicit — never materialized.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Kernel ridge regression has a closed form</strong> — ${_code("α = (K + λI)⁻¹y")}. No iteration needed.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Kernel SVM is not inherently better</strong> — For regression, kernel ridge regression is appropriate. There's no reason to expect SVM to be more precise.`)
-      )
+      "<strong style='color:var(--correct)'>✓ Always cross-validate λ</strong> — λ controls the bias-variance tradeoff for any kernel. Too small → overfit; too large → underfit. There is no universal optimal value — it must be tuned on each dataset. Cross-validation is the standard method.<br>" +
+      "<strong style='color:var(--correct)'>✓ Efficient when D ≫ N</strong> — Standard ridge regression solves a D×D system: O(D³). Kernel ridge regression solves an N×N system: O(N³). When D ≫ N (e.g. genomics, text data), the kernel approach is drastically cheaper. The kernelized closed form is α = (K + λI)⁻¹y.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ RBF is NOT slow to evaluate</strong> — We compute k(x, x') = exp(−‖x − x'‖²/2σ²) directly in O(D) time. The infinite-dimensional feature map φ(x) is implicit — it is <em>never computed</em>. The infinite dimension is a mathematical abstraction, not a runtime cost.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Kernel ridge regression HAS a closed form</strong> — α* = (K + λI)⁻¹y, then predict as ŷ = K_test α*. No iteration needed. This is a key advantage over kernel SVM.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Kernel SVM is not better for regression</strong> — Kernel SVM (SVR) is a valid approach but is not inherently superior. Kernel ridge regression is simpler, has a closed form, and is perfectly appropriate."
   },
 
   // Q19 — MCQ
@@ -459,21 +373,15 @@ registerTopic("Exam 2019",
       "K has size N×N, where N is the number of training and testing samples",
       "Given the training dataset X, we can precompute the kernel matrix K and use it both for kernel ridge regression and for kernel SVM without a change"
     ],
-    answers: [1, 3, 4, 6],
+    answer: [1, 3, 4, 6],
     explanation:
-      _section("What is K?", "var(--accent)",
-        _row("var(--accent)", `${_code("K[i,j] = k(xᵢ, xⱼ)")} for training pairs. K is <strong>N_train × N_train</strong>, built entirely from training data.`)
-      ) +
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Compute once</strong> — K is fixed after training. Each test point requires computing a new vector ${_code("k(x_test, xᵢ)")}, not rebuilding K.`) +
-        _row("var(--correct)", `${_ok()} <strong>Recompute if training data changes</strong> — Any change to a training point affects the corresponding row and column.`) +
-        _row("var(--correct)", `${_ok()} <strong>Similarity matrix</strong> — K[i,j] measures how similar training sample i is to training sample j.`) +
-        _row("var(--correct)", `${_ok()} <strong>Same K for KRR and kernel SVM</strong> — Both methods use the same training kernel matrix.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Not D×D</strong> — K encodes sample-to-sample similarities, so its size is N_train × N_train, independent of D.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Test data doesn't rebuild K</strong> — The test set doesn't enter K; it only generates new kernel evaluations at inference.`)
-      )
+      "<strong>The kernel matrix K[i,j] = k(xᵢ, xⱼ)</strong> for all pairs of <em>training</em> samples. Its size is N_train × N_train — independent of the feature dimension D.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ Compute once, reuse forever</strong> — Once you've trained (computed α = (K+λI)⁻¹y), predicting a new test point x requires only computing the vector k(x, xᵢ) for all training points i. The N×N matrix K itself never needs to be rebuilt.<br>" +
+      "<strong style='color:var(--correct)'>✓ Recompute if training data changes</strong> — Any change to a training point xᵢ affects its entire row and column in K. The solution α also changes. The model must be retrained from scratch.<br>" +
+      "<strong style='color:var(--correct)'>✓ K expresses pairwise similarity</strong> — K[i,j] = k(xᵢ, xⱼ) is a similarity score (e.g. Gaussian RBF ∈ (0,1]). This is the core idea: all information about the data enters the model through these similarities, not raw features.<br>" +
+      "<strong style='color:var(--correct)'>✓ Same K for KRR and kernel SVM</strong> — Both methods use k(xᵢ, xⱼ) over the same training set. Switching algorithms doesn't change K.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Not D×D</strong> — K captures sample-to-sample similarity, so its size depends on N (number of training samples), not D (feature dimension). This is exactly why the kernel trick helps when D is large.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Testing data doesn't affect K</strong> — Test points are never part of K. At inference, we compute a new similarity vector for each test point."
   },
 
   // Q20 — MCQ
@@ -487,19 +395,14 @@ registerTopic("Exam 2019",
       "B is more prone to overfitting than A since it has more layers",
       "A is expected to fit the training data better than B"
     ],
-    answers: [1, 4],
+    answer: [1, 4],
     explanation:
-      _section("Key insight — linear layers collapse", "var(--accent)",
-        _row("var(--accent)", `With linear activations, stacking layers is equivalent to a single linear layer: ${_code("W₂W₁x = Wx")}. Extra layers add no expressiveness.`)
-      ) +
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>B learns compact representation</strong> — The 10-unit bottleneck forces B to compress information into a low-rank encoding.`) +
-        _row("var(--correct)", `${_ok()} <strong>A fits better</strong> — No bottleneck means A has higher effective rank and can express a wider range of linear functions.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>B doesn't fit better</strong> — B's bottleneck limits its capacity. A is the stronger fitter.`) +
-        _row("var(--wrong)", `${_ko()} <strong>B doesn't overfit more</strong> — With linear activations, more layers ≠ more capacity. The bottleneck actually restricts B.`)
-      )
+      "<strong>Key insight: stacking linear layers gives nothing extra.</strong><br>" +
+      "If every layer is linear: f(z) = z, then W₂(W₁x) = (W₂W₁)x = Wx. Any composition of linear maps is still a linear map. The extra layers add depth but zero additional expressiveness.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ B learns a compact (bottleneck) representation</strong> — Network B has a 10-unit hidden layer sandwiched between 100-unit layers. This bottleneck forces the network to compress 100-dimensional information into 10 dimensions — analogous to what PCA does. This is the principle behind autoencoders.<br>" +
+      "<strong style='color:var(--correct)'>✓ A fits training data better</strong> — Network A (100→100) has no bottleneck and higher effective rank. It can represent a wider range of 100×100 linear transformations. B's 10-unit bottleneck limits its expressiveness to rank ≤ 10 transformations.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ B doesn't fit better</strong> — The bottleneck is a constraint, not an advantage for fitting.<br>" +
+      "<strong style='color:var(--wrong)'>✗ B doesn't overfit more</strong> — More layers ≠ more capacity when activations are linear. B is actually less expressive than A. Overfitting risk comes from capacity relative to data size, and B has lower capacity due to the bottleneck."
   },
 
   // Q21 — MCQ
@@ -514,23 +417,22 @@ registerTopic("Exam 2019",
       "PReLU, Leaky ReLU, ReLU",
       "sigmoid, linear, ReLU"
     ],
-    answers: [2, 5],
+    answer: [2, 5],
     explanation:
-      _section("Compute z", "var(--accent)",
-        _row("var(--accent)", `${_code("z = (−0.2)(2) + (0.5)(2) + (0)(3) + 0.1 = −0.4 + 1.0 + 0.1 = 0.7")}`)
-      ) +
-      _section("Function values at z = 0.7", "var(--text-muted)",
-        _row("var(--text-muted)", `sigmoid(0.7) = 1/(1+e⁻⁰·⁷) ≈ <strong>0.668 ≈ 0.67</strong> → fits g₁`) +
-        _row("var(--text-muted)", `ReLU(0.7) = max(0, 0.7) = <strong>0.70</strong> → fits g₂ or g₃`) +
-        _row("var(--text-muted)", `PReLU(0.7) = 0.7 (positive region) = <strong>0.70</strong> → fits g₂ or g₃`) +
-        _row("var(--text-muted)", `linear(0.7) = 0.7 = <strong>0.70</strong> → fits g₂ or g₃`) +
-        _row("var(--text-muted)", `tanh(0.7) ≈ 0.604 ✗`) +
-        _row("var(--text-muted)", `Leaky ReLU(0.7) = 0.70 — valid for g₂/g₃ but not g₁`)
-      ) +
-      _section("Valid combinations", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>sigmoid, ReLU, PReLU</strong> → 0.67 / 0.70 / 0.70 ✓`) +
-        _row("var(--correct)", `${_ok()} <strong>sigmoid, linear, ReLU</strong> → 0.67 / 0.70 / 0.70 ✓`)
-      )
+      "<strong>Step 1 — Compute z:</strong><br>" +
+      "z = w₁x₁ + w₂x₂ + w₃x₃ + b = (−0.2)(2) + (0.5)(2) + (0)(3) + 0.1 = −0.4 + 1.0 + 0 + 0.1 = <strong>0.7</strong><br><br>" +
+      "<strong>Step 2 — Evaluate each activation at z = 0.7:</strong><br>" +
+      "— sigmoid(0.7) = 1/(1+e⁻⁰·⁷) ≈ <strong>0.668 ≈ 0.67</strong> → matches a₁ ✓<br>" +
+      "— tanh(0.7) ≈ 0.604 → does NOT match any slot ✗<br>" +
+      "— ReLU(0.7) = max(0, 0.7) = <strong>0.70</strong> → matches a₂ or a₃ ✓<br>" +
+      "— PReLU(0.7) = 0.7 (positive region, same as ReLU) = <strong>0.70</strong> ✓<br>" +
+      "— linear(0.7) = 0.7 = <strong>0.70</strong> ✓<br>" +
+      "— Leaky ReLU(0.7) = 0.7 (positive region) = <strong>0.70</strong> ✓<br><br>" +
+      "<strong>Step 3 — Check which triplets work for (0.67, 0.70, 0.70):</strong><br>" +
+      "g₁ must produce 0.67 → only <strong>sigmoid</strong> qualifies.<br>" +
+      "g₂, g₃ must produce 0.70 → ReLU, PReLU, linear, Leaky ReLU all qualify.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ sigmoid, ReLU, PReLU</strong> → 0.67 / 0.70 / 0.70 ✓<br>" +
+      "<strong style='color:var(--correct)'>✓ sigmoid, linear, ReLU</strong> → 0.67 / 0.70 / 0.70 ✓"
   },
 
   // Q22 — MCQ
@@ -546,19 +448,15 @@ registerTopic("Exam 2019",
       "Decreasing the spatial size of a feature map can be achieved with either a pooling operation or a strided convolution, but pooling does not add more trainable parameters",
       "The pooling layers can only be used if the CNN tackles a classification problem"
     ],
-    answers: [1, 2, 3, 5],
+    answer: [1, 2, 3, 5],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Pooling expands receptive field</strong> — Each pooling step lets later neurons "see" a larger region of the input, at the cost of losing precise location.`) +
-        _row("var(--correct)", `${_ok()} <strong>Translation equivariant</strong> — If an object shifts in the image, feature maps shift accordingly. Convolution + average pooling preserves this.`) +
-        _row("var(--correct)", `${_ok()} <strong>Padding preserves spatial size</strong> — We can always pad the input to produce a feature map of the same spatial dimensions.`) +
-        _row("var(--correct)", `${_ok()} <strong>Pooling has no learnable parameters</strong> — It's a fixed operation (max or avg). Strided convolutions do add parameters.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Not rotation equivariant</strong> — Standard CNNs handle translation, not rotation. Rotation equivariance requires special architectures (group convolutions).`) +
-        _row("var(--wrong)", `${_ko()} <strong>1×1 CNN ≠ MLP on flattened image</strong> — A 1×1 CNN applies the same transformation at each pixel position independently. An MLP on the flattened image mixes all positions together — fundamentally different.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Pooling isn't classification-only</strong> — It's used in segmentation, detection, regression, and many other tasks.`)
-      )
+      "<strong style='color:var(--correct)'>✓ Pooling expands receptive field, loses location</strong> — Each pooling step lets a deeper neuron 'see' a larger region of the original image. But by aggregating, we lose the exact position of features. Max pooling tells you a feature exists somewhere in a region, not exactly where.<br>" +
+      "<strong style='color:var(--correct)'>✓ Translation equivariant</strong> — If an object shifts by (Δx, Δy) in the input, the feature maps shift by (Δx, Δy) too. Convolution preserves this property exactly. Pooling provides approximate translation invariance (small shifts produce similar outputs).<br>" +
+      "<strong style='color:var(--correct)'>✓ Padding preserves spatial size</strong> — Add ⌊k/2⌋ zeros on each side for kernel size k and stride 1 → output matches input size. This is standard 'same' padding in deep learning frameworks.<br>" +
+      "<strong style='color:var(--correct)'>✓ Pooling has no learnable parameters</strong> — Max/average pooling is a fixed operation. Strided convolutions replace pooling while adding learnable weights to the downsampling step. This trade-off is debated in the literature.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ NOT rotation equivariant</strong> — Standard CNNs only handle translation. A rotated cat looks nothing like its feature map of an upright cat. Rotation-equivariant networks (e.g. group CNNs) require special architectural choices.<br>" +
+      "<strong style='color:var(--wrong)'>✗ 1×1 CNN ≠ MLP on flattened image</strong> — A 1×1 CNN applies an independent linear transformation at each spatial position (same weights everywhere). An MLP on flattened data connects every pixel to every output — all positions interact. Fundamentally different operations.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Pooling is not classification-only</strong> — Segmentation networks (U-Net), detection networks, and generative models all use pooling. It is a general spatial downsampling tool."
   },
 
   // Q23 — SCQ
@@ -577,12 +475,11 @@ registerTopic("Exam 2019",
     ],
     answer: 5,
     explanation:
-      _section("Architecture → Task mapping", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>GAN → Task 4</strong> (Van Gogh paintings) — GANs are generative models trained to produce new realistic samples. Image generation and style transfer are their primary use case.`) +
-        _row("var(--correct)", `${_ok()} <strong>RNN → Task 3</strong> (car motion) — Car position is a time series. RNNs model sequential dependencies across video frames.`) +
-        _row("var(--correct)", `${_ok()} <strong>U-Net → Task 1</strong> (hippocampus segmentation) — U-Net is an encoder-decoder CNN with skip connections, designed specifically for pixel-level segmentation in medical images.`) +
-        _row("var(--correct)", `${_ok()} <strong>ResNet → Task 2</strong> (household items) — ResNet is a deep CNN with residual connections, excellent at image classification across many categories.`)
-      )
+      "<strong>Match each architecture to its core capability:</strong><br><br>" +
+      "<strong style='color:var(--correct)'>✓ GAN → Task 4 (Van Gogh generation)</strong> — A GAN consists of a generator (creates fake images) and a discriminator (judges real vs fake). The generator learns to produce novel, realistic images. Image synthesis, style transfer, and data augmentation are its primary applications.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ RNN → Task 3 (car motion prediction)</strong> — Car position is a time series across video frames. RNNs maintain a hidden state that evolves with each time step, capturing temporal dependencies. Predicting future positions from past positions is a canonical sequential prediction problem.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ U-Net → Task 1 (hippocampus segmentation)</strong> — U-Net is an encoder-decoder with skip connections between symmetric layers. The encoder extracts features; the decoder reconstructs a dense pixel-wise segmentation map. It was designed for biomedical image segmentation and remains the dominant architecture for that task.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ ResNet → Task 2 (household item classification)</strong> — ResNet introduced skip (residual) connections to enable training of very deep networks (100+ layers). These connections allow gradients to flow directly to early layers, solving the vanishing gradient problem. ResNet excels at image classification tasks with many categories."
   },
 
   // Q24 — MCQ
@@ -597,18 +494,14 @@ registerTopic("Exam 2019",
       "With CNNs, there is no need for using regularization, making them easy to train",
       "CNNs can achieve high accuracy using a smaller number of trainable parameters compared to MLPs"
     ],
-    answers: [1, 3, 5],
+    answer: [1, 3, 5],
     explanation:
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Pooling → translation robustness</strong> — Pooling provides local translation invariance: if a dog shifts slightly, feature maps barely change.`) +
-        _row("var(--correct)", `${_ok()} <strong>Local spatial features</strong> — Convolutional filters detect edges, textures, and shapes in local patches, building hierarchical representations.`) +
-        _row("var(--correct)", `${_ok()} <strong>Fewer parameters than MLPs</strong> — CNNs use weight sharing: the same filter is applied at every spatial position. An MLP on a 1080p image would need billions of weights.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>Data augmentation is still needed</strong> — CNNs are data-hungry. Without augmentation on small datasets, they overfit quickly.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Drawings ≠ photos (domain gap)</strong> — A CNN trained on cartoon drawings learns cartoon features. Accuracy on real photos will be poor.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Regularization is still needed</strong> — Dropout, batch norm, and weight decay are standard practice in CNN training.`)
-      )
+      "<strong style='color:var(--correct)'>✓ Pooling → location robustness</strong> — Pooling provides local translation invariance: if a dog shifts a few pixels, the pooled features barely change. This is critical for real-world images where exact object position varies.<br>" +
+      "<strong style='color:var(--correct)'>✓ Convolutional layers detect local spatial features</strong> — Each filter learns to detect a specific pattern (edge, corner, texture, color gradient) in a local patch. Deeper layers combine these into complex detectors (eyes, snouts, fur texture). The hierarchical feature extraction is what makes CNNs so powerful for images.<br>" +
+      "<strong style='color:var(--correct)'>✓ Fewer parameters than MLPs</strong> — Weight sharing: the same filter is applied at every spatial position. A 3×3 filter on a 1000×1000 image uses only 9 parameters regardless of image size. An MLP would need 1000² × output_size parameters just for the first layer — computationally infeasible for real images.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ Data augmentation IS necessary</strong> — CNNs have millions of parameters and are extremely data-hungry. Without augmentation (flips, crops, rotations, color jitter) on limited datasets, they overfit rapidly. Augmentation is standard practice.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Drawings ≠ photos (domain gap)</strong> — A CNN trained on cartoon dogs learns cartoon-specific features (flat colors, sharp edges, outlines). These features don't transfer to real photos with complex textures and lighting. This is the domain shift problem.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Regularization is essential</strong> — Dropout, batch normalization, and weight decay are standard in every CNN. Without them, large networks overfit severely."
   },
 
   // Q25 — MCQ
@@ -624,22 +517,16 @@ registerTopic("Exam 2019",
       "Train the network for a longer time, provided that the training error keeps decreasing",
       "We have too few parameters, therefore adding more layers might help"
     ],
-    answers: [4, 5, 6],
+    answer: [4, 5, 6],
     explanation:
-      _section("Diagnosis: underfitting", "var(--accent)",
-        _row("var(--accent)", `${_tip()} Poor performance on <strong>both training and test data</strong> is the signature of underfitting. The model is too constrained. Fix: increase capacity or reduce constraints.`)
-      ) +
-      _section("Correct", "var(--correct)",
-        _row("var(--correct)", `${_ok()} <strong>Remove regularization</strong> — If the model already underfits, regularization constrains it further. Removing it gives more freedom to learn.`) +
-        _row("var(--correct)", `${_ok()} <strong>Train longer</strong> — If training loss is still decreasing, the model simply hasn't converged yet.`) +
-        _row("var(--correct)", `${_ok()} <strong>Add more layers</strong> — More layers = more capacity = ability to learn more complex features.`)
-      ) +
-      _section("Incorrect", "var(--wrong)",
-        _row("var(--wrong)", `${_ko()} <strong>No closed form for CNNs</strong> — CNNs are non-linear and non-convex. No closed-form minimizer exists.`) +
-        _row("var(--wrong)", `${_ko()} <strong>ReLU not outputting negatives is fine</strong> — This is by design and doesn't cause underfitting.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Transposed convolutions are for upsampling</strong> — They belong in decoders, not in classification CNNs.`) +
-        _row("var(--wrong)", `${_ko()} <strong>Padding is beneficial</strong> — It preserves spatial dimensions and retains border information.`)
-      )
+      "<strong>Poor performance on BOTH train and test = underfitting.</strong> The model doesn't have enough capacity or has been over-constrained. Do NOT add regularization — remove constraints and add capacity.<br><br>" +
+      "<strong style='color:var(--correct)'>✓ Remove regularization</strong> — Regularization is intended to prevent overfitting. If the model already can't fit the training data, adding or keeping regularization makes it even harder to learn. Remove dropout, reduce weight decay.<br>" +
+      "<strong style='color:var(--correct)'>✓ Train longer</strong> — If the training loss is still decreasing, the model simply hasn't converged yet. CNNs often need many epochs. Training longer (with early stopping monitoring validation loss) is the cheapest first fix to try.<br>" +
+      "<strong style='color:var(--correct)'>✓ Add more layers</strong> — More layers = deeper feature hierarchy = more capacity. Face detection is a complex task; a shallow network may genuinely lack the expressiveness to solve it.<br><br>" +
+      "<strong style='color:var(--wrong)'>✗ No closed form for CNNs</strong> — CNNs are non-linear (ReLU), non-convex. There is no analytical formula for the global minimum. Even if there were, the optimization landscape has many saddle points and local minima. SGD is the correct approach.<br>" +
+      "<strong style='color:var(--wrong)'>✗ ReLU not outputting negatives is a feature</strong> — ReLU(z) = max(0, z) introduces sparsity and avoids the vanishing gradient problem. The fact that it doesn't output negatives is by design and unrelated to underfitting.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Transposed convolutions are for upsampling</strong> — They are used in decoder networks (U-Net, segmentation) to increase spatial resolution. Replacing standard convolutions with them in a classification CNN makes no architectural sense.<br>" +
+      "<strong style='color:var(--wrong)'>✗ Removing padding hurts</strong> — Padding preserves spatial dimensions across layers, allowing deeper networks. Removing it causes feature maps to shrink at every layer, losing border information and limiting network depth."
   }
 
 );
